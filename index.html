@@ -80,7 +80,7 @@
                 // This function will call SnapLogic Ultra Task.
                 function requestSnapLogicUltra(url, token, params, action, action_fail, metadata) {
                     var xhr = new XMLHttpRequest();
-                    xhr.open("POST", url, true);
+                    xhr.open("POST", url, false);
                     xhr.onreadystatechange = function () {
                         if (xhr.readyState === 4 && xhr.status === 200) {
                             var responseJson = JSON.parse(xhr.responseText);
