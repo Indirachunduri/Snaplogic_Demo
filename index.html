@@ -20,7 +20,7 @@
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
 
-    <title>SnpalogicTwitter Sentiment Analysis</title>
+    <title>Snaplogic Chat Analysis</title>
 </head>
 
 <body>
@@ -29,7 +29,7 @@
 
         <!-- Title -->
         <h1 class="display-4">
-            Twitter Sentiment Analysis - Snaploigc Demo
+            Snaplogic Chat Analysis
         </h1>
 
         <div class="container">
@@ -38,7 +38,7 @@
             <div class="row" style="margin-bottom: 20px">
                 <div class="col-md-12" style=background-color:white;>
                     <form onSubmit="return false;">
-                        <label>Ultra URL</label>
+                        <label>Triggered Task URL</label>
                         <input type="text" class="form-control" id="inputUltraURL" style="width: 100%"
                             value="https://elastic.snaplogic.com/api/1/rest/slsched/feed/Vivid_edge_dev/projects/shared/Indu%20exp1-rag-query-pipeline%20Task">
                         <label style="margin-top: 10px">Token</label>
@@ -52,14 +52,14 @@
             <div class="row">
                 <div class="col-md-6" style=background-color:white;>
                     <div class="form-group">
-                        <label for="inputTextArea">Input:</label>
+                        <label for="inputTextArea" >Question:</label>
                         <textarea class="form-control" rows="15"
                             id="inputTextArea">Paste a question here and click submit.</textarea>
                     </div>
                 </div>
                 <div class="col-md-6" style=background-color:white;>
                     <div class="form-group">
-                        <label for="outputTextArea">Output:</label>
+                        <label for="outputTextArea" >Response:</label>
                         <textarea readonly class="form-control" rows="15" id="outputTextArea"></textarea>
                     </div>
                 </div>
@@ -76,13 +76,36 @@
             </div>
 
             <script>
+			
+				function authenticateUser(user, password)
+					{
+						var token = user + ":" + password;
+
+						// Should i be encoding this value????? does it matter???
+						// Base64 Encoding -> btoa
+						var hash = btoa(token); 
+
+						return "Basic " + hash;
+					}
 
                 // This function will call SnapLogic Ultra Task.
                 function requestSnapLogicUltra(url, token, params, action, action_fail, metadata) {
                     var xhr = new XMLHttpRequest();
                     xhr.open("POST", url, true);
+					xhr.setRequestHeader("Authorization", authenticateUser('sudhakar.dasari@vivid-edge.com', 'IamDas@r9VEC'));
+					xhr.setRequestHeader("accept", "*/*");	
+                    //xhr.setRequestHeader("Access-Control-Allow-Origin", "https://elastic.snaplogic.com/*");									
+					xhr.setRequestHeader("Content-Type" , "application/json");
+					xhr.setRequestHeader("Accept" , "application/json");
+                    //xhr.setRequestHeader("Access-Control-Allow-Credentials" , "true");						
+                    //xhr.setRequestHeader("Access-Control-Allow-Methods" , "POST");					
+                    //xhr.setRequestHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers,Authorization");					
+                    //xhr.setRequestHeader("Origin" , "https://elastic.snaplogic.com");					
+                    //xhr.send();
+    
                     xhr.onreadystatechange = function () {
-                        if (xhr.readyState === 4 && xhr.status === 200) {
+					console.log(xhr);
+					    if (xhr.readyState === 4 && xhr.status === 200) {
                             var responseJson = JSON.parse(xhr.responseText);
                             if (metadata == null) {
                                 action(responseJson);
@@ -98,7 +121,8 @@
                         "token": token,
                         "params": params
                     };
-                    xhr.send(JSON.stringify(content));
+                  xhr.send(JSON.stringify(content));
+				   
                 }
 
                 // This is triggered when the user clicks "Submit". It sends the tweet to SnapLogic's Ultra Task and get back sentiment along with confidence level.
@@ -118,9 +142,9 @@
 
                     // Handle response.
                     var action = function (responseJson) {
-                        var result = responseJson;
-                        var result_pretty = JSON.stringify(result, function (key, val) {
-                            if (val.toFixed) {
+                        var result = responseJson[0].content[0];
+						var result_pretty = JSON.stringify(result, function (key, val) {
+                            if (val && val.toFixed) {
                                 return Number(val.toPrecision(3));
                             } else {
                                 return val;
