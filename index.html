@@ -58,9 +58,9 @@
                     </div>
                 </div>
                 <div class="col-md-6" style=background-color:white;>
-                    <div class="form-group">
+                    <div class="form-group" >
                         <label for="outputTextArea" >Response:</label>
-                        <textarea readonly class="form-control" rows="15" id="outputTextArea"></textarea>
+                        <div readonly class="form-control" rows="15" id="outputTextArea" style="overflow:scroll;height:370px"></div>
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@
             </div>
 
             <script>
-			
+		
 			    function showPleaseWait() {    
 					if (document.querySelector("#pleaseWaitDialog") == null) {
 						var modalLoading = '<div class="modal" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false" role="dialog">\
@@ -159,7 +159,7 @@
                 function operate() {
                     showPleaseWait();
                     // Waiting message.
-                    document.getElementById("outputTextArea").value = "Waiting for result from SnapLogic.";
+                    document.getElementById("outputTextArea").innerHTML  = "Waiting for result from SnapLogic.";
 
                     var input = document.getElementById("inputTextArea").value;
 
@@ -180,7 +180,14 @@
                                 return val;
                             }
                         }, 4);
-                        document.getElementById("outputTextArea").value = result_pretty;
+                        //document.getElementById("outputTextArea").innerHTML  = result_pretty;
+						console.log(result_pretty);
+						result_pretty.replace(/\n/g, "<br />");
+						setTimeout(function(){
+						  $('#outputTextArea').html(result_pretty);
+						
+						},500);
+						//$('#outputTextArea').html($('#outputTextArea').html());
                     }
 
                     // Handle failure.
