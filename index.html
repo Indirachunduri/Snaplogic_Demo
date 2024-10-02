@@ -20,7 +20,7 @@
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
 
-    <title>Snaplogic Chat Analysis</title>
+    <title>SSnaplogic GenAI RAG</title>
 </head>
 
 <body>
@@ -29,7 +29,7 @@
 
         <!-- Title -->
         <h1 class="display-4">
-            Snaplogic Chat Analysis
+            Snaplogic GenAI RAG
         </h1>
 
         <div class="container">
@@ -54,7 +54,7 @@
                     <div class="form-group">
                         <label for="inputTextArea" >Question:</label>
                         <textarea class="form-control" rows="15"
-                            id="inputTextArea">Paste a question here and click submit.</textarea>
+                            id="inputTextArea" placeholder="Paste a question here and click submit."></textarea>
                     </div>
                 </div>
                 <div class="col-md-6" style=background-color:white;>
@@ -157,6 +157,11 @@
 
                 // This is triggered when the user clicks "Submit". It sends the tweet to SnapLogic's Ultra Task and get back sentiment along with confidence level.
                 function operate() {
+				if(!$('#inputTextArea').val()){
+				alert("Please ask a queation!");
+				return false;
+				}
+				
                     showPleaseWait();
                     // Waiting message.
                     document.getElementById("outputTextArea").innerHTML  = "Waiting for result from SnapLogic.";
@@ -173,6 +178,8 @@
                     // Handle response.
                     var action = function (responseJson) {
                         var result = responseJson[0].content[0];
+						result = result.replace(/(\r\n|\n|\r)/gm, "").replaceAll('```html', "").replaceAll('```', "");
+						result = result.replaceAll('"```html', "");
 						var result_pretty = JSON.stringify(result, function (key, val) {
                             if (val && val.toFixed) {
                                 return Number(val.toPrecision(3));
@@ -182,11 +189,12 @@
                         }, 4);
                         //document.getElementById("outputTextArea").innerHTML  = result_pretty;
 						console.log(result_pretty);
-						result_pretty.replace(/\n/g, "<br />");
-						setTimeout(function(){
+						//result_pretty.replace(/\n/g, "<br />");
+						//setTimeout(function(){
+						result_pretty = result_pretty.replaceAll('"```html', "");
 						  $('#outputTextArea').html(result_pretty);
 						
-						},500);
+						//},500);
 						//$('#outputTextArea').html($('#outputTextArea').html());
                     }
 
