@@ -21,19 +21,347 @@
         crossorigin="anonymous"></script>
 
     <title>SSnaplogic GenAI RAG</title>
+	
+	<style>
+	*{
+  margin: 0;
+  padding: 0;
+	box-sizing: border-box;
+}
+
+html,body{
+  min-width: 100%;
+  overflow-x: hidden;
+  font-size: 16px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+header .navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  min-height: 12vh;
+  min-width: 100%;
+  z-index: 10;
+  background: white;
+}
+
+header .navigation .logo{
+  margin-left: 20px;
+}
+
+header .navigation .logo h1{
+  color: #b1d4e0;
+  font-size: 30px;
+  line-height: 38px;
+}
+
+header .navigation .menu-list {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 45%;
+  margin: auto 20px auto 0;
+}
+
+header .navigation .humbarger {
+  margin-right: 20px;
+  display: none;
+ }
+ 
+header .navigation .humbarger .bar{
+  width: 30px;
+  height: 2px;
+  margin: 7px;
+  background: #b1d4e0;
+ }
+
+header .navigation .menu-list li a {
+  color: #b1d4e0;
+  font-size: 1.25rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 1s ease, border 1s ease;
+  text-decoration: none;
+}
+
+/* ====================
+  Intro Section
+=======================*/
+.intro-section {
+  height: 100vh;
+  position: relative;
+  background: rgba(15, 20, 35, 0.9);
+}
+
+.intro-section .intro-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+
+.intro-section .intro-content h1 {
+  color: #b1d4e0;
+  font-size: 5rem;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+  margin-top: 80px;
+}
+
+.intro-section .intro-content h6{
+  margin-top: 5px;
+  color: #b1d4e0;
+  font-size: 2.5rem;
+  font-weight: 300;
+}
+
+.intro-section .intro-content p {
+  margin-top: 40px;
+  color: #b1d4e0;
+}
+
+.intro-content .tagline {
+  margin-top:80px;
+}
+
+.intro-section .intro-content .tagline .change-container{
+	position: relative;
+  display: inline-block;
+  width: 560px;
+  margin-bottom: 55px;
+	margin-top: 30px;
+}
+
+.intro-section .intro-content .changing {
+	position: absolute;
+	overflow: hidden;
+  width: 100%;
+  left:0;
+  bottom:0;
+  height:0;
+  opacity:0;
+  color: #b1d4e0;
+  text-transform: uppercase;
+  word-spacing: 5px;
+	text-align: center;
+	font-size: 2.5rem;
+}
+
+.changing:nth-child(1) {
+  animation: revealNextWord 6s cubic-bezier(0.57, 1.52, 0.9, 1.08) 1.5s infinite;
+}
+
+.changing:nth-child(2) {
+  animation: revealNextWord 6s cubic-bezier(0.57, 1.52, 0.9, 1.08) 3s infinite;
+}
+
+.changing:nth-child(3) {
+  animation: revealNextWord 6s cubic-bezier(0.57, 1.52, 0.9, 1.08) 4.5s infinite;
+}
+
+@keyframes revealNextWord {
+  0% { 
+    opacity: 0.3; 
+    height: 0.0; 
+  }
+  10% { 
+    opacity: 1; 
+    height:1.2em; 
+  }
+  20% { 
+    opacity: 1; 
+    height:1.2em; 
+  }
+  28% { 
+    opacity: 0; 
+    height:2em; 
+  }
+  
+}
+
+.intro-section .intro-content .header-btn a{
+  text-decoration: none;
+  font-size: 1.5rem;
+  color: #3498db;
+  background-color: #b1d4e0;
+  padding: 15px;
+  border-radius: 5px;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+}
+
+.intro-section .intro-content .header-btn a:before{
+	position: absolute;
+  content: ""; 
+  top: 0px;
+  height: 100%;
+  left: -25%;
+  width: 0%;
+  background-color: #3498db;
+  transform: skew(50deg);
+  transition-duration: 1s;
+  z-index: 1;
+}
+
+.intro-section .intro-content .header-btn a:hover{
+  color: #b1d4e0;
+}
+
+.intro-section .intro-content .header-btn a:hover:before{
+  width: 170%;
+
+}
+
+.intro-section .intro-content .header-btn a span{
+	position: relative;
+	z-index: 9;
+}
+
+/* ====================
+  Responsive Section
+=======================*/
+
+/* Tablet desktop :768px. */
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  header .navigation .menu-list {
+    width: 60%;
+  }
+
+  header .navigation .menu-list li a{
+    font-size: 1rem;
+  }
+
+}
+
+/* Large Mobile :480px. */
+
+@media only screen and (max-width: 767px) {
+
+  header .navigation .menu-list {
+    position: absolute;
+    top: 12vh;
+    min-width: 100%;
+    background: rgba(15, 20, 35, 0.99);
+    text-align: center;
+    display: none;
+  }
+
+  header .navigation .menu-list li {
+    display: block;
+  }
+
+  header .navigation .menu-list li a {
+    display: block;
+    padding: 20px;
+    transition: color 1s ease, padding 1s ease, background-color 1s ease;
+
+  }
+
+  header .navigation .menu-list li a:hover{
+    color: #b1d4e0;
+    padding-left: 30px;
+    background: rgba(177, 212, 224, 0.2);
+  }
+
+
+  header .navigation .humbarger{
+    display: block;
+  }
+
+  .intro-section .intro-content h1 {
+    font-size: 2.8rem;
+  }
+
+  .intro-section .intro-content h6 {
+    font-size: 1.4rem;
+  }
+
+  .intro-section .intro-content .changing {
+    font-size: 1.5rem;
+  }
+
+  .intro-section .intro-content .header-btn a{
+    font-size: 1.25rem;
+  }
+
+}
+
+
+/* small mobile :320px. */
+
+@media only screen and (max-width: 479px) {
+
+  .intro-inner .intro-content h1 {
+    font-size: 2rem;
+    letter-spacing: 1px;
+  }
+
+  .intro-inner .intro-content p {
+    margin-top: 10px;
+  }
+
+}
+
+    .inputTextArea,.outputTextArea {
+    font-size: 20px;
+    color: #01509B;
+    font-style: italic;
+    font-family: bold;
+    font-weight: bold
+	}
+    </style>
+	<!--====== Header Section Start ======-->
+	<header>
+		<nav class="navigation">
+
+			<!-- Logo -->
+			<div class="logo">
+				<h1><a href="https://www.vivid-edge.com">
+						<img src="https://www.vivid-edge.com/wp-content/themes/vividedge-child/img/VividEdge_Logo_1.svg" width="269" height="73" alt="Vivid Edge">
+					</a></h1>
+			</div>
+			
+			<!-- Navigation 
+			<ul class="menu-list">
+				<li><a href="#">Home</a></li>
+				<li><a href="#">About</a></li>
+				<li><a href="#">Services</a></li>
+				<li><a href="#portfolio">Project</a></li>
+				<li><a href="#">Contact</a></li>
+			</ul>
+
+			<div class="humbarger">
+				<div class="bar"></div>
+				<div class="bar2 bar"></div>
+				<div class="bar"></div>
+			</div>-->
+		</nav>
+    
+    <!-- ==== Intro Section Start ==== -->
+		
+	</header>
 </head>
 
 <body>
 
-    <div class="container">
+    <div class="container" style="margin-top:5%">
 
         <!-- Title -->
-        <h1 class="display-4">
-            Snaplogic GenAI RAG
-        </h1>
-
-        <div class="container">
-
+				<h1 style='text-align:center;color:#0A7ABF'>VividXpress RetrofitXpress Search Portal</h1>
+				
+      
             <!-- Ultra Task Configuration -->
             <div class="row" style="margin-bottom: 20px;display:none">
                 <div class="col-md-12" style=background-color:white;>
@@ -52,14 +380,14 @@
             <div class="row" style="margin-top:4%">
                 <div class="col-md-6" style=background-color:white;>
                     <div class="form-group">
-                        <label for="inputTextArea" >Question:</label>
+                        <label for="inputTextArea" class="inputTextArea">Search</label>
                         <textarea class="form-control" rows="15"
                             id="inputTextArea" placeholder="Paste a question here and click submit."></textarea>
                     </div>
                 </div>
                 <div class="col-md-6" style=background-color:white;>
                     <div class="form-group" >
-                        <label for="outputTextArea" >Response:</label>
+                        <label for="outputTextArea" class="outputTextArea">Response:</label>
                         <div readonly class="form-control" rows="15" id="outputTextArea" style="overflow:scroll;height:370px"></div>
                     </div>
                 </div>
@@ -208,8 +536,8 @@
                 }
             </script>
         </div>
-    </div>
-
+	
+	
 </body>
 
 </html>
